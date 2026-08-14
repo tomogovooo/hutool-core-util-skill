@@ -63,7 +63,7 @@ npx skills add tomogovooo/hutool-core-util-skill --skill hutool-core-util-skill 
 ```
 
 
-```安装命令由 [`skills`](https://github.com/vercel-labs/skills) CLI 提供，不需要把本仓库另外发布成 npm 包。使用者需要先安装 Node.js，并确保 `npm` 和 `npx` 可用；
+安装命令由 [`skills`](https://github.com/vercel-labs/skills) CLI 提供，不需要把本仓库另外发布成 npm 包。使用者需要先安装 Node.js，并确保 `npm` 和 `npx` 可用；
 
 ## 它解决什么问题
 
