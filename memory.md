@@ -1,128 +1,79 @@
-# Memory — 用户个性化偏好配置
+# Memory — Hutool 使用偏好
 
-> 本文件记录你对 Hutool 工具类使用的个性化偏好。
-> AI 助手在生成回答时会读取并遵从这些配置。
-> 按需修改下方各项，删除 `#` 注释符号即可启用对应配置。
+本文件保存跨项目默认偏好。用户当前请求、仓库强制指令和匹配的项目配置具有更高优先级。AI 只应用“当前生效”代码块中的值；注释示例不生效。
 
----
-
-## 基础偏好
+## 当前生效
 
 ```yaml
-# 偏好的编程语言（java / kotlin）
-# language: java
-
-# Hutool 版本锁定（如不指定，默认同时覆盖 5.x 和 6.x）
-# hutool-version: 5.8.25
-
-# 包名风格（hutool5 使用 cn.hutool，hutool6 使用 org.dromara.hutool）
-# package-style: cn.hutool
+prefer-hutool: true
+hutool-scope: all-available-modules
+dependency-policy: existing-first
+prefer-module-specific-dependency: true
+allow-new-hutool-dependency: when-authorized
+allow-switch-to-hutool-all: false
+api-verification: project-exact-version
+show-imports: true
+show-pitfalls: true
+verbosity: standard
+validation-policy: syntax-and-structure-first
+run-full-build-by-default: false
+run-full-test-suite-by-default: false
 ```
 
-## 代码风格
+这些默认值表示：
+
+- 在当前项目实际版本和依赖范围内，语义合适时优先使用 Hutool 全模块 API。
+- 优先复用已有依赖；只有任务允许修改构建文件时才增加完全同版本的最小模块。
+- 不为单个能力改成 `hutool-all`，不顺手升级 Hutool。
+- 精确 API 必须按项目版本核实，不能只依据本 Skill 的 5.8.47 示例。
+- 修改后默认快速重读并检查语法/结构，不自动执行全量编译或全部测试。
+
+## 可选覆盖项
+
+按需把需要的字段加入“当前生效”代码块：
 
 ```yaml
-# 偏好的代码风格
-#   - traditional   传统写法，一步一步赋值
-#   - chained       链式调用风格
-#   - functional    函数式 / Stream 风格
-# code-style: traditional
-
-# 是否在示例中包含完整 import 语句
-# show-imports: true
-
-# 是否在示例中包含注释说明
+# language: java                 # java / kotlin
+# hutool-version: 5.8.47        # 通常留空并从项目检测
+# package-style: cn.hutool      # cn.hutool / org.dromara.hutool
+# hutool-modules:               # 当前模块实际依赖，不含仅由 BOM 管理的模块
+#   - hutool-core
+#   - hutool-json
+# code-style: traditional       # traditional / chained / functional
 # show-comments: true
-
-# 缩进风格（spaces / tabs）
-# indent-style: spaces
-
-# 缩进宽度
-# indent-width: 4
-```
-
-## 回答偏好
-
-```yaml
-# 是否显示 JDK 原生 API 的对比方案
 # show-jdk-alternative: true
-
-# 是否显示 Apache Commons / Guava 的对比方案
 # show-third-party-alternative: false
-
-# 回答详细程度
-#   - concise    简洁模式：只给核心代码和一句话说明
-#   - standard   标准模式：代码 + 参数说明 + 注意事项
-#   - detailed   详细模式：代码 + 参数说明 + 注意事项 + 原理解析 + 对比
-# verbosity: standard
-
-# 是否标注方法的最低版本要求
 # show-since-version: true
-
-# 是否显示常见陷阱与注意事项
-# show-pitfalls: true
-```
-
-## 项目约束
-
-```yaml
-# 禁用的工具类或方法（逗号分隔）
-# 示例：项目中已封装了自己的日期工具类，禁止直接使用 DateUtil
-# disabled-apis: DateUtil, BeanUtil.copyProperties
-
-# 推荐的替代方案映射
-# 格式：原始API -> 替代方案
+# disabled-apis:
+#   - DateUtil
+#   - BeanUtil.copyProperties
 # alternatives:
-#   - DateUtil.parse -> ProjectDateHelper.parse
-#   - IdUtil.simpleUUID -> ProjectIdGenerator.generate
-
-# 必须遵循的编码规约
+#   DateUtil.parse: ProjectDateHelper.parse
 # conventions:
-#   - BeanUtil.copyProperties 必须设置 ignoreNullValue=true
-#   - NumberUtil.div 必须指定精度和舍入模式
-#   - FileUtil 操作必须使用 try-with-resources
+#   - BeanUtil.copyProperties 必须显式设置 CopyOptions
+#   - NumberUtil.div 必须指定 scale 和 RoundingMode
 ```
 
----
+## 字段规则
 
-## 使用说明
+| 字段 | 可选值或含义 |
+|---|---|
+| `dependency-policy` | `existing-only` / `existing-first` / `allow-minimal-module` |
+| `allow-new-hutool-dependency` | `never` / `when-authorized` / `always` |
+| `api-verification` | `project-exact-version` / `local-api` / `official-api` |
+| `verbosity` | `concise` / `standard` / `detailed` |
+| `validation-policy` | `syntax-and-structure-first` / `targeted-checks` / `project-default` |
 
-1. **启用配置**：将你需要的配置项前面的 `#` 删除即可生效。
-2. **多值配置**：部分配置项支持列表格式，使用 YAML 列表语法。
-3. **优先级**：`project/<项目名>.md` 中的配置会覆盖本文件中的同名配置。
-4. **实时生效**：修改保存后，下次对话即自动应用新配置。
+`always` 仍不能越过用户授权或仓库依赖规则；它只在任务本身允许依赖变更时表达偏好。
 
-### 配置示例
+## 配置优先级
 
-一个 Kotlin 开发者的典型配置：
+从高到低应用：
 
-```yaml
-language: kotlin
-hutool-version: 5.8.25
-package-style: cn.hutool
-code-style: chained
-show-imports: true
-show-jdk-alternative: false
-show-third-party-alternative: false
-verbosity: concise
-show-pitfalls: true
-```
+1. 用户当前请求；
+2. 当前仓库的强制指令和统一封装；
+3. `project/` 中明确匹配且 `active: true` 的项目配置；
+4. 本文件“当前生效”配置；
+5. Skill 默认规则。
 
-一个注重代码质量的 Java 团队配置：
-
-```yaml
-language: java
-hutool-version: 6.0.0
-package-style: org.dromara.hutool
-code-style: traditional
-show-imports: true
-show-jdk-alternative: true
-show-third-party-alternative: true
-verbosity: detailed
-show-since-version: true
-show-pitfalls: true
-disabled-apis: DateUtil
-conventions:
-  - BeanUtil.copyProperties 必须设置 CopyOptions
-  - NumberUtil.div 必须指定 scale 和 RoundingMode
-```
+配置中的版本、包名和模块若与构建文件冲突，以项目真实依赖为准并报告差异。
