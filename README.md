@@ -29,13 +29,13 @@
 npx skills add tomogovooo/hutool-core-util-skill
 ```
 
-# 常见 AI Agent Skills 全局安装指南
+### 常见 AI Agent Skills 全局安装指南
 
 以下命令均使用 `--global` 进行全局安装，并指定 `--agent` 目标，安装后可在任何项目目录下使用。
 
 ---
 
-## 🎯 常见 Agent 列表
+#### 🎯 常见 Agent 列表
 
 | Agent 名称 | 说明 |
 | :--- | :--- |
@@ -53,9 +53,9 @@ npx skills add tomogovooo/hutool-core-util-skill
 
 ---
 
-## 📦 安装命令（指定 --agent）
+#### 📦 安装命令（指定 --agent）
 
-### 1. 单 Agent 安装（推荐）
+##### 1. 单 Agent 安装（推荐）
 
 ```bash
 # Hutool 核心工具技能（Java 工具类库助手）
