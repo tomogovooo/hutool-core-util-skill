@@ -8,6 +8,7 @@
 
 ## 目录
 
+- [使用 npx 安装](#使用-npx-安装)
 - [它解决什么问题](#它解决什么问题)
 - [AI 会怎样工作](#ai-会怎样工作)
 - [如何使用](#如何使用)
@@ -17,6 +18,36 @@
 - [目录结构](#目录结构)
 - [个性化配置](#个性化配置)
 - [使用边界](#使用边界)
+
+## 使用 npx 安装
+
+仓库地址：[tomogovooo/hutool-core-util-skill](https://github.com/tomogovooo/hutool-core-util-skill)
+
+安装到当前项目：
+
+```bash
+npx skills add tomogovooo/hutool-core-util-skill
+```
+
+全局安装并指定给 Codex 使用：
+
+```bash
+npx skills add tomogovooo/hutool-core-util-skill --skill hutool-core-util-skill --agent codex --global --yes
+```
+
+查看仓库中可安装的 Skill：
+
+```bash
+npx skills add tomogovooo/hutool-core-util-skill --list
+```
+
+更新已经全局安装的 Skill：
+
+```bash
+npx skills update hutool-core-util-skill --global --yes
+```
+
+安装命令由 [`skills`](https://github.com/vercel-labs/skills) CLI 提供，不需要把本仓库另外发布成 npm 包。使用者需要先安装 Node.js，并确保 `npm` 和 `npx` 可用；仓库中的最新修改也需要先提交并推送到 GitHub，才能通过上述命令安装到。
 
 ## 它解决什么问题
 
