@@ -32,7 +32,7 @@ npx skills add tomogovooo/hutool-core-util-skill
 全局安装并指定给 Codex 使用：
 
 ```bash
-npx skills add tomogovooo/hutool-core-util-skill --skill hutool-core-util-skill --agent codex --global --yes
+npx skills add tomogovooo/hutool-core-util-skill --skill hutool-core-util-skill --global --yes
 ```
 
 
