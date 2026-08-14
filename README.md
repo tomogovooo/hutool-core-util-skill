@@ -29,25 +29,14 @@
 npx skills add tomogovooo/hutool-core-util-skill
 ```
 
-全局安装：
+全局安装并指定给 Codex 使用：
 
 ```bash
-npx skills add tomogovooo/hutool-core-util-skill --global --yes
+npx skills add tomogovooo/hutool-core-util-skill --skill hutool-core-util-skill --agent codex --global --yes
 ```
 
-查看仓库中可安装的 Skill：
 
-```bash
-npx skills add tomogovooo/hutool-core-util-skill --list
-```
-
-更新已经全局安装的 Skill：
-
-```bash
-npx skills update hutool-core-util-skill --global --yes
-```
-
-安装命令由 [`skills`](https://github.com/vercel-labs/skills) CLI 提供，不需要把本仓库另外发布成 npm 包。使用者需要先安装 Node.js，并确保 `npm` 和 `npx` 可用；仓库中的最新修改也需要先提交并推送到 GitHub，才能通过上述命令安装到。
+```安装命令由 [`skills`](https://github.com/vercel-labs/skills) CLI 提供，不需要把本仓库另外发布成 npm 包。使用者需要先安装 Node.js，并确保 `npm` 和 `npx` 可用；
 
 ## 它解决什么问题
 
@@ -64,17 +53,18 @@ npx skills update hutool-core-util-skill --global --yes
 
 ## AI 会怎样工作
 
-| 阶段 | 行为 |
-|---|---|
-| 识别项目 | 检查 Maven/Gradle、BOM、版本目录、import 和已有封装 |
-| 确认边界 | 判断 Hutool 主版本、精确版本、当前模块实际依赖和项目规范 |
-| 发现候选 | 主动寻找可由 Hutool 替代的通用工具逻辑，不要求用户先说出类名 |
-| 路由资料 | 只读取当前需求相关的模块说明和 `data/*.md`，避免一次加载全部文档 |
-| 核实 API | 确认类全名、artifact、方法重载、返回值、异常和最低版本 |
-| 比较语义 | 检查空值、编码、时区、精度、资源、线程安全和安全默认值 |
-| 实施修改 | 使用最小范围改动，保留框架生命周期和项目统一封装 |
-| 快速验证 | 默认检查修改后的代码、import、括号、泛型和明显签名问题 |
-| 结果说明 | 报告使用的模块/类、依赖变化、验证范围和未验证行为 |
+
+| 阶段     | 行为                                                            |
+| -------- | --------------------------------------------------------------- |
+| 识别项目 | 检查 Maven/Gradle、BOM、版本目录、import 和已有封装             |
+| 确认边界 | 判断 Hutool 主版本、精确版本、当前模块实际依赖和项目规范        |
+| 发现候选 | 主动寻找可由 Hutool 替代的通用工具逻辑，不要求用户先说出类名    |
+| 路由资料 | 只读取当前需求相关的模块说明和`data/*.md`，避免一次加载全部文档 |
+| 核实 API | 确认类全名、artifact、方法重载、返回值、异常和最低版本          |
+| 比较语义 | 检查空值、编码、时区、精度、资源、线程安全和安全默认值          |
+| 实施修改 | 使用最小范围改动，保留框架生命周期和项目统一封装                |
+| 快速验证 | 默认检查修改后的代码、import、括号、泛型和明显签名问题          |
+| 结果说明 | 报告使用的模块/类、依赖变化、验证范围和未验证行为               |
 
 核心原则是：能安全使用 Hutool 时优先使用；不适合时不要为了“用了 Hutool”而强行替换。
 
@@ -85,31 +75,28 @@ npx skills update hutool-core-util-skill --global --yes
 ```text
 使用 $hutool-core-util-skill 修改这段 Java 代码，优先复用项目已有的 Hutool API。
 ```
-
 也可以给出更具体的约束：
 
 ```text
 使用 $hutool-core-util-skill 检查这个模块的手写工具逻辑，不要新增依赖。
 ```
-
 ```text
 用 Hutool HTTP 和 JSON 完成这个接口调用，保留现有超时、异常和序列化行为。
 ```
-
 ```text
 这是 Hutool 6.x 项目，先核实当前版本 API，再修改代码，不要照搬 5.x 包名。
 ```
-
 Skill 已允许隐式触发：处理 Java/Kotlin 通用工具逻辑，或项目已经出现 Hutool 依赖/import 时，AI 可以主动应用这些规则。
 
 ## 覆盖范围
 
-| 范围 | 主要能力 |
-|---|---|
-| Core | 字符串、集合、Map、Bean、日期、数字、转换、IO、文件、反射、正则、ID、网络、URL、压缩、编码、脱敏等 |
-| 常用独立模块 | JSON、HTTP、Crypto、POI/Excel、DB、Cron、Setting、Log、Socket |
-| Hutool 5.x 扩展 | JWT、Cache、Captcha、System、Script、DFA、AOP、BloomFilter、AI 等 |
-| Extra 生态 | 邮件、二维码、拼音、Emoji、FTP/SFTP、模板、分词、校验、系统监控等第三方适配 |
+
+| 范围            | 主要能力                                                                                           |
+| --------------- | -------------------------------------------------------------------------------------------------- |
+| Core            | 字符串、集合、Map、Bean、日期、数字、转换、IO、文件、反射、正则、ID、网络、URL、压缩、编码、脱敏等 |
+| 常用独立模块    | JSON、HTTP、Crypto、POI/Excel、DB、Cron、Setting、Log、Socket                                      |
+| Hutool 5.x 扩展 | JWT、Cache、Captcha、System、Script、DFA、AOP、BloomFilter、AI 等                                  |
+| Extra 生态      | 邮件、二维码、拼音、Emoji、FTP/SFTP、模板、分词、校验、系统监控等第三方适配                        |
 
 `data/01–13` 提供 Hutool 5.x Core 详细资料；`data/14–19` 提供 HTTP、JSON、Crypto、POI/Excel、DB、JWT 详细资料。其他模块通过 [全模块路由](references/hutool-modules.md) 定位，再按项目精确版本核实官方 API。
 
@@ -150,7 +137,6 @@ hutool-core-util-skill/
     ├── 01-string-util.md ... 13-other-util.md
     └── 14-http-util.md ... 19-jwt-util.md
 ```
-
 ## 个性化配置
 
 - 在 [memory.md](memory.md) 中设置跨项目偏好，例如是否允许新增模块、回答详细度和默认验证强度。
